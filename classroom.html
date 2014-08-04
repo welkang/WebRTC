@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<video src="" autoplay></video>
+
+<script type="text/javascript">
+    navigator.getUserMedia = navigator.webkitGetUserMedia;
+    var constraints = {
+        audio: false,
+        video: true
+    }
+    var video = document.querySelector('video');
+
+    navigator.getUserMedia(constraints, successCallback, errorCallback);
+
+    function successCallback (stream) {
+        if(window.URL){
+            video.src = window.URL.createObjectURL(stream);
+        }else{
+            video.src = stream;
+        }
+        video.play();
+
+    }
+    function errorCallback () {
+        alert(0);
+    }
+
+
+</script>
+</body>
+</html>

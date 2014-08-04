@@ -1,0 +1,23 @@
+{
+  "name": "OnlineClass",
+  "version": "0.0.0",
+  "description": "onlineClass ===========",
+  "main": "localPeerConnection.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/welkang/OnlineClass.git"
+  },
+  "dependencies": {
+    "node-static": "^0.7.4",
+    "socket.io": "^1.0.6"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/welkang/OnlineClass/issues"
+  },
+  "homepage": "https://github.com/welkang/OnlineClass"
+}
