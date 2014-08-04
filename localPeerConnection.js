@@ -193,3 +193,10 @@ function gotRemoteIceCandidate(event){
         log("Remote ICE candidate: \n " + event.candidate.candidate);
     }
 }
+
+
+start();
+setTimeout(function(){
+    call();
+
+}, 1000)

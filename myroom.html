@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+    <video id="localVideo" autoplay></video>
+
+    <video id="remoteVideo" autoplay></video>
+
+<script type="text/javascript">
+    var localVideo = document.getElementById('localVideo');
+    var remoteVideo = document.getElementById('remoteVideo');
+    var localStream = null;
+
+    navigator.getUserMedia = navigator.webkitGetUserMedia;
+
+    navigator.getUserMedia({audio: true, video: true}, function(stream){
+        localVideo.src = URL.createObjectURL(stream);
+        localStream = stream;
+    }, function(err){
+        console.log(err);
+    })
+
+
+
+    var RTCPeerConnection = webkitRTCPeerConnection;
+    var localPeerConnection, remotePeerConnection;
+
+    localPeerConnection = new RTCPeerConnection(null);
+    remotePeerConnection = new RTCPeerConnection(null);
+
+    localPeerConnection.onicecandidate = function(event){
+        if(event.candidate){
+            remotePeerConnection.addIceCandidate(new RTCIceCandidate(event.candidate));
+        }
+    };
+
+    remotePeerConnection.onicecandidate = function(event){
+        if(event.candidate){
+            localPeerConnection.addIceCandidate(new RTCIceCandidate(event.candidate));
+        }
+    };
+
+    remotePeerConnection.onaddstream = function (event) {
+        remoteVideo.src = URL.createObjectURL(event.stream);
+    }
+
+    localPeerConnection.addStream(localStream);
+
+
+    localPeerConnection.createOffer(function(description){
+        localPeerConnection.setLocalDescription(description);
+        remotePeerConnection.setRemoteDescription(description);
+
+        remotePeerConnection.createAnswer(function(d){
+            remotePeerConnection.setLocalDescription(d);
+            localPeerConnection.setRemoteDescription(d);
+
+        }, function(e){
+
+        });
+    }, function(e){
+
+    })
+
+
+</script>
+</body>
+</html>

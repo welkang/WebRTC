@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<textarea name="" id="dataChannelSend" cols="30" rows="10"></textarea>
+
+<textarea name="" id="dataChannelReceive" cols="30" rows="10"></textarea>
+
+<input type="button" id="sendButton" value="send"/>
+
+<script type="text/javascript">
+    var sendChannel, receiveChannel;
+    var sendButton = document.getElementById("sendButton");
+
+
+    sendButton.onclick = function(){
+        var data = document.getElementById("dataChannelSend").value;
+        console.log(sendChannel);
+        sendChannel.send(data);
+    }
+
+
+    var RTCPeerConnection = webkitRTCPeerConnection;
+
+    var pc_constraints = {
+        'optional': [
+            {'DtlsSrtpKeyAgreement': true}
+        ]
+    };
+
+    var localPeerConnection = new RTCPeerConnection(null, pc_constraints);
+    var remotePeerConnection = new RTCPeerConnection(null, pc_constraints);
+
+    sendChannel = localPeerConnection.createDataChannel('sendDataChannel', {reliable: true});
+
+    localPeerConnection.onicecandidate = function(event){
+        if(event.candidate){
+            remotePeerConnection.addIceCandidate(event.candidate);
+        }
+    }
+
+    sendChannel.onopen = function(){
+        var readyState = sendChannel.readyState;
+        console.log(2323);
+        console.log(readyState);
+    }
+
+    sendChannel.onclose = function(){
+
+    }
+
+
+
+    remotePeerConnection.onicecandidate = function(event){
+        if(event.candidate) {
+            localPeerConnection.addIceCandidate(event.candidate)
+        }
+    }
+
+    remotePeerConnection.ondatachannel = function(event){
+        receiveChannel = event.channel;
+
+        receiveChannel.onmessage = function(e){
+            document.getElementById('dataChannelReceive').value = e.data;
+        }
+
+    }
+
+    setTimeout(function(){
+
+    localPeerConnection.createOffer(function(desc){
+        localPeerConnection.setLocalDescription(desc);
+        remotePeerConnection.setRemoteDescription(desc);
+
+        remotePeerConnection.createAnswer(function(d){
+            remotePeerConnection.setLocalDescription(d);
+            localPeerConnection.setRemoteDescription(d);
+        }, function(){
+
+        })
+    }, function(){
+
+    })
+    }, 1000)
+</script>
+</body>
+</html>

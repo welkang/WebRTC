@@ -1,0 +1,22 @@
+{
+    "name": "SimpleNodeServer",
+    "version": "0.1.0",
+    "description": "SimpleNodeServer",
+    "main": "hello-world-server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified! Configure in package.json\" && exit 1"
+    },
+    "repository": "",
+    "keywords": [
+        "Node.js",
+        "Eclipse",
+        "Nodeclipse"
+    ],
+    "dependencies": {
+        "node-static": "^0.7.4",
+        "socket.io": "^1.0.6"
+    },
+    "author": "",
+    "license": "BSD",
+    "readmeFilename": "README.md"
+}
